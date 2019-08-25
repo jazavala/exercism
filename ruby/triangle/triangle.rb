@@ -6,15 +6,15 @@ class Triangle
   end
 
   def equilateral?
-    triangle? && number_uniq_sides == 1
+    triangle? && equal_sides == 3
   end
 
   def isosceles?
-    triangle? && number_uniq_sides <= 2
+    triangle? && equal_sides >= 2
   end
 
   def scalene?
-    triangle? && number_uniq_sides == 3
+    triangle? && equal_sides == 1
   end
 
 private
@@ -23,8 +23,8 @@ private
     !invalid_side? && !inequality? && !degenerate?
   end
 
-  def number_uniq_sides
-    sides.uniq.count
+  def equal_sides
+    @equal_sides ||= sides.group_by(&:itself).map { |k,v| [k, v.count] }.to_h.values.max
   end
 
   def invalid_side?
